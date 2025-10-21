@@ -11,3 +11,134 @@ paths:
       responses:
         '200':
           description: ok
+  /memories/search:
+    post:
+      summary: Search memories
+      description: Returns hybrid-ranked memories matching the provided query.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemorySearchRequest'
+      responses:
+        '200':
+          description: Successful search response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemorySearchResponse'
+  /memories/retrieve_for_task:
+    post:
+      summary: Retrieve memories for task
+      description: Returns contextual memories to support the provided task description.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrieveForTaskRequest'
+      responses:
+        '200':
+          description: Successful task retrieval response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveForTaskResponse'
+components:
+  schemas:
+    MemoryPayload:
+      type: object
+      required:
+        - memory_id
+        - title
+        - branch
+        - content
+        - salience
+      properties:
+        memory_id:
+          type: string
+          description: Stable identifier for the memory record.
+        title:
+          type: string
+          description: Short label summarising the memory.
+        branch:
+          type: string
+          description: Logical branch or folder the memory belongs to.
+        content:
+          type: string
+          description: Full text content associated with the memory.
+        salience:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Relative salience score (0-1).
+    MemorySearchHit:
+      type: object
+      required:
+        - memory
+        - score
+      properties:
+        memory:
+          $ref: '#/components/schemas/MemoryPayload'
+        score:
+          type: number
+          format: float
+          minimum: 0
+          description: Hybrid keyword + salience score.
+    MemorySearchRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          description: Free-text query to match memories.
+        limit:
+          type: integer
+          default: 5
+          minimum: 1
+          maximum: 20
+          description: Maximum number of memories to return (default 5, max 20).
+    MemorySearchResponse:
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemorySearchHit'
+    RetrieveForTaskRequest:
+      type: object
+      required:
+        - task
+      properties:
+        task:
+          type: string
+          minLength: 1
+          description: Task description requiring contextual memories.
+        branch:
+          type: string
+          nullable: true
+          description: Branch hint to narrow retrieval to specific workstreams.
+        limit:
+          type: integer
+          default: 3
+          minimum: 1
+          maximum: 20
+          description: Maximum number of supporting memories to return (default 3, max 20).
+    RetrieveForTaskResponse:
+      type: object
+      required:
+        - task
+        - context
+      properties:
+        task:
+          type: string
+        context:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemorySearchHit'
