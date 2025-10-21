@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.env
+venv/
+
+# Node
+node_modules/
+*.log
+
+# General
+.idea/
+.vscode/
