@@ -1,15 +1,9 @@
-# Human Memory
+# Memory Gateway — RAG-only (Starter, Minimal)
 
-This repository currently just holds the initial scaffolding for the Human Memory project. Update this README with goals, architecture decisions, and setup steps as the project evolves.
+Local-first **Memory Gateway** to serve personal memories to agents/LLMs via RAG.
 
-## Getting Started
-
-1. Clone the repository: `git clone https://github.com/talktorobson/human-memory.git`
-2. Add project-specific dependencies or tooling.
-3. Document how to run and test the project once the implementation begins.
-
-## Contributing
-
-- Open an issue or discussion before introducing major changes.
-- Keep commits focused and write clear commit messages.
-- Update documentation alongside code changes.
+## What’s here
+- `docs/CODEX_BRIEF.md` — context for Codex.
+- `api/openapi.yaml` — API contract (search + retrieve_for_task).
+- `gateway/` — FastAPI app (mock store).
+- `infra/docker-compose.yml` — run locally.

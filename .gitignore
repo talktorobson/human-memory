@@ -17,3 +17,6 @@ node_modules/
 # General
 .idea/
 .vscode/
+
+# Swarm coordination
+.swarm/
