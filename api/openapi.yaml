@@ -55,6 +55,7 @@ components:
         - branch
         - content
         - salience
+        - memory_type
       properties:
         memory_id:
           type: string
@@ -74,6 +75,13 @@ components:
           minimum: 0
           maximum: 1
           description: Relative salience score (0-1).
+        memory_type:
+          type: string
+          enum:
+            - semantic
+            - episodic
+            - procedural
+          description: Categorisation of the memory (semantic, episodic, procedural).
     MemorySearchHit:
       type: object
       required:
@@ -135,10 +143,51 @@ components:
       required:
         - task
         - context
+        - provenance
       properties:
         task:
           type: string
         context:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/MemoryTypeGroup'
+        provenance:
+          type: array
+          items:
+            $ref: '#/components/schemas/Provenance'
+    Provenance:
+      type: object
+      required:
+        - memory_id
+        - memory_type
+        - detail
+      properties:
+        memory_id:
+          type: string
+          description: Identifier for the memory the provenance relates to.
+        memory_type:
+          type: string
+          enum:
+            - semantic
+            - episodic
+            - procedural
+          description: Memory type tied to the provenance record.
+        detail:
+          type: string
+          description: Source or lineage description for the memory.
+    MemoryTypeGroup:
+      type: object
+      required:
+        - hits
+        - provenance
+      properties:
+        hits:
           type: array
           items:
             $ref: '#/components/schemas/MemorySearchHit'
+          description: Ranked memories for the type.
+        provenance:
+          type: array
+          items:
+            $ref: '#/components/schemas/Provenance'
+          description: Provenance metadata for memories within the type group.

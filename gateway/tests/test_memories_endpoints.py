@@ -24,6 +24,7 @@ def test_search_memories_returns_ranked_hits(client: TestClient) -> None:
     assert len(results) == 1
     top_hit = results[0]
     assert top_hit["memory"]["memory_id"] == "mem_001"
+    assert top_hit["memory"]["memory_type"] == "semantic"
     assert top_hit["score"] >= 0.5
 
 
@@ -35,11 +36,19 @@ def test_retrieve_for_task_honors_branch_filter(client: TestClient) -> None:
     data = response.json()
 
     assert data["task"] == payload["task"]
-    contexts = data["context"]
-    assert len(contexts) == 1
-    memory = contexts[0]["memory"]
+    context = data["context"]
+    assert "procedural" in context
+    procedural_group = context["procedural"]
+    hits = procedural_group["hits"]
+    assert len(hits) == 1
+    memory = hits[0]["memory"]
     assert memory["branch"] == "quality/checklists"
-    assert contexts[0]["score"] >= 0.3
+    assert memory["memory_type"] == "procedural"
+    assert hits[0]["score"] >= 0.3
+
+    provenance_entries = data["provenance"]
+    assert provenance_entries
+    assert any(entry["memory_id"] == memory["memory_id"] for entry in provenance_entries)
 
 
 def test_search_applies_limit(client: TestClient) -> None:

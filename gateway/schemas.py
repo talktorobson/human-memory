@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field, conint
+
+
+MemoryType = Literal["semantic", "episodic", "procedural"]
 
 
 class MemoryPayload(BaseModel):
@@ -11,6 +14,9 @@ class MemoryPayload(BaseModel):
     branch: str = Field(..., description="Logical branch or folder the memory belongs to.")
     content: str = Field(..., description="Full text content associated with the memory.")
     salience: float = Field(..., ge=0.0, le=1.0, description="Relative salience score (0-1).")
+    memory_type: MemoryType = Field(
+        ..., description="Categorisation of the memory (semantic, episodic, procedural)."
+    )
 
 
 class MemorySearchRequest(BaseModel):
@@ -29,6 +35,21 @@ class MemorySearchResponse(BaseModel):
     results: List[MemorySearchHit]
 
 
+class Provenance(BaseModel):
+    memory_id: str = Field(..., description="Identifier for the memory the provenance relates to.")
+    memory_type: MemoryType = Field(
+        ..., description="Memory type tied to the provenance record."
+    )
+    detail: str = Field(..., description="Source or lineage description for the memory.")
+
+
+class MemoryTypeGroup(BaseModel):
+    hits: List[MemorySearchHit] = Field(..., description="Ranked memories for the type.")
+    provenance: List[Provenance] = Field(
+        ..., description="Provenance metadata for memories within the type group."
+    )
+
+
 class RetrieveForTaskRequest(BaseModel):
     task: str = Field(
         ..., min_length=1, description="Task description requiring contextual memories."
@@ -43,4 +64,5 @@ class RetrieveForTaskRequest(BaseModel):
 
 class RetrieveForTaskResponse(BaseModel):
     task: str
-    context: List[MemorySearchHit]
+    context: Dict[MemoryType, MemoryTypeGroup]
+    provenance: List[Provenance]
