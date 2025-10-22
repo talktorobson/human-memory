@@ -24,7 +24,7 @@ def test_search_memories_returns_ranked_hits(client: TestClient) -> None:
     assert len(results) == 1
     top_hit = results[0]
     assert top_hit["memory"]["memory_id"] == "mem_001"
-    assert top_hit["score"] >= 0.5
+    assert top_hit["score"] == pytest.approx(0.935, rel=1e-3)
 
 
 def test_retrieve_for_task_honors_branch_filter(client: TestClient) -> None:
@@ -39,7 +39,7 @@ def test_retrieve_for_task_honors_branch_filter(client: TestClient) -> None:
     assert len(contexts) == 1
     memory = contexts[0]["memory"]
     assert memory["branch"] == "quality/checklists"
-    assert contexts[0]["score"] >= 0.3
+    assert contexts[0]["score"] == pytest.approx(0.74, rel=1e-3)
 
 
 def test_search_applies_limit(client: TestClient) -> None:
