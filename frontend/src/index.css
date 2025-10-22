@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: theme("fontFamily.sans");
+  background-color: #f4f4f5;
+  color: #09090b;
+}
+
+button {
+  font-family: inherit;
+}
