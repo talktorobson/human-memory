@@ -15,41 +15,46 @@ class MemoryRecord:
     branch: str
     content: str
     salience: float
+    memory_type: str
     keywords: Sequence[str]
 
 
 MOCK_MEMORIES: Tuple[MemoryRecord, ...] = (
     MemoryRecord(
         memory_id="mem_001",
-        title="Vector schema sketch",
-        branch="project/architecture",
-        content="Outlined pgvector table shapes and indexing plan for memory retrieval.",
-        salience=0.9,
-        keywords=("pgvector", "schema", "index"),
+        title="Vehicle registration profile",
+        branch="identity/vehicle",
+        content=(
+            "Catalogued the 2022 Tesla Model 3 assigned to the agent, including VIN, "
+            "registration renewal dates, and charging access credentials."
+        ),
+        salience=0.85,
+        memory_type="identity",
+        keywords=("vehicle", "registration", "tesla"),
     ),
     MemoryRecord(
         memory_id="mem_002",
-        title="Agent briefing baseline",
-        branch="docs/briefs",
-        content="Captured requirements for Memory Gateway v1, including search and retrieve endpoints.",
-        salience=0.8,
-        keywords=("brief", "requirements", "gateway"),
+        title="Normandy travel log",
+        branch="travel/normandy",
+        content=(
+            "Recorded the reconnaissance trip through Normandy, noting Omaha Beach terrain, "
+            "local contacts, and evening shelter arrangements after the coastal survey."
+        ),
+        salience=0.95,
+        memory_type="episodic",
+        keywords=("normandy", "travel", "recon"),
     ),
     MemoryRecord(
         memory_id="mem_003",
-        title="Keyword scoring prototype",
-        branch="experiments/ranking",
-        content="Prototyped hybrid keyword and salience ranking with weight tuning placeholders.",
-        salience=0.75,
-        keywords=("ranking", "keyword", "salience"),
-    ),
-    MemoryRecord(
-        memory_id="mem_004",
-        title="RAG evaluation checklist",
-        branch="quality/checklists",
-        content="Defined evaluation rubric for assessing retrieval relevance and coverage.",
-        salience=0.6,
-        keywords=("rag", "evaluation", "quality"),
+        title="AHS intake workflow",
+        branch="work/ahs",
+        content=(
+            "Documented the Ariadne Health Services patient intake procedure: verify ID, "
+            "collect triage vitals, prioritise emergencies, and brief the on-call physician."
+        ),
+        salience=0.8,
+        memory_type="procedural",
+        keywords=("ahs", "workflow", "triage"),
     ),
 )
 

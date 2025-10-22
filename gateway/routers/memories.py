@@ -49,6 +49,7 @@ def _format_hits(hits: List[Tuple[MemoryRecord, float]]) -> List[MemorySearchHit
                     branch=record.branch,
                     content=record.content,
                     salience=record.salience,
+                    memory_type=record.memory_type,
                 ),
                 score=score,
             )
