@@ -7,3 +7,4 @@ Local-first **Memory Gateway** to serve personal memories to agents/LLMs via RAG
 - `api/openapi.yaml` — API contract (search + retrieve_for_task).
 - `gateway/` — FastAPI app (mock store).
 - `infra/docker-compose.yml` — run locally.
+- `.github/workflows/ci.yml` — GitHub Actions pipeline running gateway tests on pushes and PRs.
