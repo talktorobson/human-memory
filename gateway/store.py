@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from typing import Iterable, List, Sequence, Tuple
 
 
-KEYWORD_WEIGHT = 0.7
-SALIENCE_WEIGHT = 0.3
+KEYWORD_WEIGHT = 0.35
+SALIENCE_WEIGHT = 0.65
 
 
 @dataclass(frozen=True)
