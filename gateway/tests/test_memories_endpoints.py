@@ -38,10 +38,19 @@ def test_retrieve_for_task_honors_branch_filter(client: TestClient) -> None:
     data = response.json()
 
     assert data["task"] == payload["task"]
-    contexts = data["context"]
-    assert len(contexts) == 1
-    memory = contexts[0]["memory"]
+    context = data["context"]
+    assert "procedural" in context
+    procedural_group = context["procedural"]
+    hits = procedural_group["hits"]
+    assert len(hits) == 1
+    memory = hits[0]["memory"]
     assert memory["branch"] == "quality/checklists"
+    assert memory["memory_type"] == "procedural"
+    assert hits[0]["score"] >= 0.3
+
+    provenance_entries = data["provenance"]
+    assert provenance_entries
+    assert any(entry["memory_id"] == memory["memory_id"] for entry in provenance_entries)
     assert contexts[0]["score"] == pytest.approx(0.74, rel=1e-3)
     assert memory["branch"] == "travel/normandy"
     assert memory["title"] == "Normandy travel log"
