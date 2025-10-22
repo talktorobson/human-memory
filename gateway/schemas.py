@@ -14,9 +14,7 @@ class MemoryPayload(BaseModel):
     branch: str = Field(..., description="Logical branch or folder the memory belongs to.")
     content: str = Field(..., description="Full text content associated with the memory.")
     salience: float = Field(..., ge=0.0, le=1.0, description="Relative salience score (0-1).")
-    memory_type: MemoryType = Field(
-        ..., description="Categorisation of the memory (semantic, episodic, procedural)."
-    )
+    memory_type: str = Field(..., description="Classification of the memory (identity, episodic, procedural, etc.).")
 
 
 class MemorySearchRequest(BaseModel):

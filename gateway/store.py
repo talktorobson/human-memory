@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from typing import Dict, Iterable, List, Literal, Sequence, Tuple, TypedDict, Union, cast
 
 
-KEYWORD_WEIGHT = 0.7
-SALIENCE_WEIGHT = 0.3
+KEYWORD_WEIGHT = 0.35
+SALIENCE_WEIGHT = 0.65
 
 
 MemoryType = Literal["semantic", "episodic", "procedural"]
@@ -18,6 +18,7 @@ class MemoryRecord:
     branch: str
     content: str
     salience: float
+    memory_type: str
     keywords: Sequence[str]
     memory_type: MemoryType
     provenance: str
@@ -69,6 +70,39 @@ MOCK_MEMORIES: Tuple[MemoryRecord, ...] = (
         keywords=("rag", "evaluation", "quality"),
         memory_type="procedural",
         provenance="Quality review checklist maintained by evaluation guild.",
+        title="Vehicle registration profile",
+        branch="identity/vehicle",
+        content=(
+            "Catalogued the 2022 Tesla Model 3 assigned to the agent, including VIN, "
+            "registration renewal dates, and charging access credentials."
+        ),
+        salience=0.85,
+        memory_type="identity",
+        keywords=("vehicle", "registration", "tesla"),
+    ),
+    MemoryRecord(
+        memory_id="mem_002",
+        title="Normandy travel log",
+        branch="travel/normandy",
+        content=(
+            "Recorded the reconnaissance trip through Normandy, noting Omaha Beach terrain, "
+            "local contacts, and evening shelter arrangements after the coastal survey."
+        ),
+        salience=0.95,
+        memory_type="episodic",
+        keywords=("normandy", "travel", "recon"),
+    ),
+    MemoryRecord(
+        memory_id="mem_003",
+        title="AHS intake workflow",
+        branch="work/ahs",
+        content=(
+            "Documented the Ariadne Health Services patient intake procedure: verify ID, "
+            "collect triage vitals, prioritise emergencies, and brief the on-call physician."
+        ),
+        salience=0.8,
+        memory_type="procedural",
+        keywords=("ahs", "workflow", "triage"),
     ),
 )
 
